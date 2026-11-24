@@ -1,0 +1,74 @@
+
+<h1>
+  {{ idEdicao !== null ? 'Editar Monitoria' : 'Cadastrar Monitoria' }}
+</h1>
+
+@if (carregando) {
+  <p>Carregando dados da monitoria...</p>
+}
+
+<form [formGroup]="formulario" (ngSubmit)="salvar()">
+  <div>
+    <label for="disciplina">Disciplina:</label>
+    <input
+      id="disciplina"
+      type="text"
+      formControlName="disciplina"
+      placeholder="Ex: Matemática"
+    />
+
+    @if (formulario.controls.disciplina.invalid &&
+         formulario.controls.disciplina.touched) {
+      <p>Informe uma disciplina com pelo menos 2 caracteres</p>
+    }
+  </div>
+
+  <div>
+    <label for="nomeMonitor">Nome do Monitor:</label>
+    <input
+      id="nomeMonitor"
+      type="text"
+      formControlName="nomeMonitor"
+      placeholder="Ex: João Silva"
+    />
+
+    @if (formulario.controls.nomeMonitor.invalid &&
+         formulario.controls.nomeMonitor.touched) {
+      <p>Informe um nome com pelo menos 2 caracteres</p>
+    }
+  </div>
+
+  <div>
+    <label for="vagasTotais">Quantidade de vagas:</label>
+    <input
+      id="vagasTotais"
+      type="number"
+      formControlName="vagasTotais"
+      min="1"
+    />
+
+    @if (formulario.controls.vagasTotais.invalid &&
+         formulario.controls.vagasTotais.touched) {
+      <p>A quantidade mínima é de 1 vaga</p>
+    }
+  </div>
+
+
+    <button type="submit"
+        [disabled]="formulario.invalid || salvando || carregando || (idEdicao !== null && !monitoriaOriginal)">
+        {{ salvando ? 'Salvando...' : (idEdicao !== null ? 'Atualizar Monitoria' : 'Salvar Monitoria') }}
+    </button>
+
+
+    @if (mensagem) {
+    <p>{{ mensagem }}</p>
+}
+
+
+</form>
+
+<p>
+  <a routerLink="/monitorias">Voltar para monitorias</a>
+</p>
+
+

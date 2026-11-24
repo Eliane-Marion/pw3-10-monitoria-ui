@@ -1,0 +1,75 @@
+<h1>Sistema de Monitorias</h1>
+
+<h2>Monitorias disponíveis</h2>
+<a routerLink="/monitorias/nova">
+  + Nova Monitoria
+</a>
+@if (mensagemAcao) {
+  <p>{{ mensagemAcao }}</p>
+}
+
+@if (carregando) {
+  <p>Carregando monitorias...</p>
+}
+@else if (erro) {
+  <p>{{ erro }}</p>
+}
+@else if (monitorias.length === 0) {
+  <p>Nenhuma monitoria cadastrada.</p>
+}
+@else {
+  <table>
+    <thead>
+      <tr>
+        <th>Disciplina</th>
+        <th>Monitor</th>
+        <th>Vagas</th>
+        <th>Status</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (monitoria of monitorias; track monitoria.id) {
+        <tr>
+          <td>{{ monitoria.disciplina }}</td>
+          <td>{{ monitoria.nomeMonitor }}</td>
+          <td>
+            {{ monitoria.vagasOcupadas }} /
+            {{ monitoria.vagasTotais }}
+          </td>
+
+          <td>
+            <span
+              class="status"
+              [class.status-aberta]="monitoria.aberta"
+              [class.status-lotada]="!monitoria.aberta">
+              {{ monitoria.aberta ? 'ABERTA' : 'LOTADA' }}
+            </span>
+          </td>
+
+
+<td>
+  <button
+    (click)="inscrever(monitoria.id)"
+    [disabled]="!monitoria.aberta || monitoria.vagasOcupadas >= monitoria.vagasTotais">
+    Inscrever
+  </button>
+
+<button (click)="excluir(monitoria.id)">
+  Excluir
+</button>
+
+
+<a [routerLink]="['/monitorias', monitoria.id, 'editar']">
+  Editar
+</a>
+
+
+</td>
+
+        </tr>
+      }
+    </tbody>
+  </table>
+}
